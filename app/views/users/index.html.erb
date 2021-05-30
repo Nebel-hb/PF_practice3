@@ -1,0 +1,9 @@
+111
+<% @users.each do |user| %>
+<div>
+  <% link_to user_path(user.id) do %>
+  <%= user.email %>
+  aaa
+  <% end %>                
+</div>
+<% end %>

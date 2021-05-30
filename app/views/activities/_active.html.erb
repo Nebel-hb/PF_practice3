@@ -1,0 +1,40 @@
+<% visitor = activity.visitor %>
+<% visited = activity.visited %>
+<div class="col-md-6 mx-auto">
+  <div class="form-inline">
+    <span>
+      <% case activity.action %>
+        <% when 'follow' then %>
+      <%= link_to user_path(visited) do %>
+        # = image_tag avatar_url(visited).to_s, class: "icon_mini"
+        <strong>
+          <%= visited.email %><% end %>
+      <%= "さんをフォローしました" %>
+      </strong>
+    <% when 'like' then %>
+      <span>
+        <%= link_to post_path(activity.post) do %>
+          <%= image_tag avatar_url(activity.post.user).to_s, class: "icon_mini" %>
+          <strong>
+            <%= activity.post.user.name + 'さんの投稿' %><% end %>
+      <%= "にいいねしました" %></strong></span>
+
+    <% when 'comment' then %>
+      <% if activity.post.user_id == visitor.id %>
+        <%= link_to "あなたの投稿", activity.post, style: "font-weight: bold;" %>
+      <% else %>
+        <span>
+          <%= link_to post_path(activity.post) do %>
+            <!--%= image_tag avatar_url(activity.post.user).to_s, class: "icon_mini" %>-->
+            <strong>
+              <%= activity.post.user.email + 'さんの投稿' %></strong>
+              <% end %>
+      <%= "にコメントしました" %></span>
+              <% end %>
+              <% end %>
+      <p class="text-muted.mb-0">
+        <%= Comment.find_by(id: activity.comment_id)&.comment %></p>
+
+<div class="small text-muted text-right">
+  <%= time_ago_in_words(activity.created_at).upcase %></div>
+<hr>
