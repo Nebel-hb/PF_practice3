@@ -1,0 +1,2 @@
+class CreateAuthority < ApplicationRecord
+end

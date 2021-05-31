@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
-  get 'users/show'
-  get 'chats/show'
+ 
   devise_for :users
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   root to: 'home#show'
+  get 'top', to: 'home#top'
   resources :users, only: [:show, :index]
-
+  resources :rooms, only: [:show, :create]
   resources :posts do  #postsコントローラへのルーティング
     resources :comments, only: [:create, :destroy]
   end
@@ -17,6 +17,6 @@ Rails.application.routes.draw do
   resources :notifications, only: :index
   
   get 'chat/:id' => 'chats#show', as: 'chat'
-  resources :chats, only: [:create]
+  resources :chats, only: [:create, :show]
 
 end

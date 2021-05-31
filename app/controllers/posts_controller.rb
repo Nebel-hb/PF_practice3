@@ -5,7 +5,7 @@ class PostsController < ApplicationController
     tag_list = params[:post][:tag_name].split(nil)
     if @post.save
       @post.save_tag(tag_list)
-      @post.create_notification_comment!(current_user, @comment.id)#通知
+      # @post.create_notification_comment!(current_user, @comment.id)#通知
       redirect_back(fallback_location: root_path)
     else
       redirect_back(fallback_location: root_path)
@@ -35,6 +35,6 @@ end
 
  private
    def post_params
-     params.require(:post).permit(:content)
+     params.require(:post).permit(:content, :user_id)
    end
 end

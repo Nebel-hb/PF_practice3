@@ -1,0 +1,9 @@
+h1 Room#show
+p Find me in app/views/room/show.html.slim
+<p><%= "ルーム名：#{@room.name}" %></p>
+
+<input type="text" data-behavior="room_speaker"> // 投稿フォーム
+
+<div id="posts">
+  <%= render "chat", collection: @chats %>
+</div>

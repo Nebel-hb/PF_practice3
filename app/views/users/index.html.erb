@@ -1,9 +1,59 @@
-111
+
+
+<h1>Users index</h1>
+<p>Find me in app/views/users/index.html.erb</p>
+
+<script>
+  $(function() {
+    // groupクラスの変更を検知する
+    $('.group').change(function() {
+      $.ajax({
+　　　　　// getしたいurl
+        url: "/users/show",
+        // 送信形式にget設定
+        type: "GET",
+　　　　　// パラメーターにuser_idとgroup_idを追加して、コントローラーへ渡す
+        data: { user_id: $(this).attr('id'),room_id: $(this).has('option:selected').val() }
+      });
+　　　　　// グループへ招待したら、画面上からグループを消す。
+        $(this).children('option:selected').remove();
+    });
+  });
+</script>
+
+
 <% @users.each do |user| %>
-<div>
-  <% link_to user_path(user.id) do %>
-  <%= user.email %>
-  aaa
-  <% end %>                
-</div>
+ <p><%= user.email %></p>
+  <!-- テストなので、user.idが1じゃない時にしてますが、実際はcurrent_userのidではない時に表示にしましょう -->
+  <% if user.id != 1 %>
+  <select class='group' id=<%= "#{user.id}" %>>
+    <option value="0">グループへ招待</option>
+    <% @rooms.each do |room| %>
+      <option value=<%= "#{room.id}" %>><%= "#{room.name}" %></option>
+
+    <% end %>
+    <% if user_signed_in? %>
+  <h2>トークルーム作成</h2>
+  <%= form_with model: @room do |f| %>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+    <%= f.label :orchestra_id %>
+    <%= f.text_field :orchestra_id%>
+
+    <%= f.submit %>
+  <% end %>
+
+  <h2>参加済トークルーム一覧</h2>
+  <% @room_all.each do |room| %>
+    <%= room.name %>
+  <% end %>
+<h2>未参加トークルーム一覧</h2>
+  <% @nonrooms.each do |room| %>
+    <%= room.name %>
+  <% end %>
+
+<% end %>
+  </select>
+  <% end %>
+  <hr>
 <% end %>
